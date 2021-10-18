@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".EditCardsActivity" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="65dp"
+        android:background="#3C4DD0"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="61dp"
+            android:orientation="horizontal"
+            android:weightSum="10.05">
+
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.05" />
+
+            <ImageView
+                android:id="@+id/HomeMenuButtonFromEditCard"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.95"
+                android:background="#B2B8EA"
+                app:srcCompat="@drawable/homebutton" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.05" />
+
+            <TextView
+                android:id="@+id/EditCardText"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="7.95"
+                android:background="#B2B8EA"
+                android:gravity="center"
+                android:text="Edit Cards"
+                android:textSize="30dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.05" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp" />
+
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/EditCards"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
+</LinearLayout>

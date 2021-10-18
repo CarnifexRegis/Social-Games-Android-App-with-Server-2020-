@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/GameBoard"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorPrimaryDark"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:weightSum="100"
+    tools:context=".DuelActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/UserInfoContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="18">
+
+        <!--OPPONENT-->
+        <ImageButton
+            android:id="@+id/OppAvatar"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="fitXY"
+            android:background="#00FFFFFF"
+            android:src="@drawable/user_icon2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/OppAvatarHighlight"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/highlight_profile"
+            app:layout_constraintBottom_toBottomOf="@+id/OppAvatar"
+            app:layout_constraintEnd_toEndOf="@+id/OppAvatar"
+            app:layout_constraintStart_toStartOf="@+id/OppAvatar"
+            app:layout_constraintTop_toTopOf="@+id/OppAvatar"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/OppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Gabojor"
+            android:textColor="@color/colorPrimaryLight"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/OppAvatar" />
+
+        <ProgressBar
+            android:id="@+id/OppHealthBar"
+            style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="12dp"
+            android:progress="70"
+            android:progressBackgroundTint="@color/colorProgressBackground"
+            android:progressTint="@color/colorHealth"
+            android:scaleY="2"
+            app:layout_constraintEnd_toEndOf="@+id/OppAvatar"
+            app:layout_constraintStart_toStartOf="@+id/OppAvatar"
+            app:layout_constraintTop_toBottomOf="@+id/OppName" />
+
+        <TextView
+            android:id="@+id/OppHealth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="100"
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorHealth"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/OppHealthBar"
+            app:layout_constraintStart_toEndOf="@+id/OppHealthBar"
+            app:layout_constraintTop_toTopOf="@+id/OppHealthBar"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ProgressBar
+            android:id="@+id/OppManaBar"
+            style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="12dp"
+            android:layout_marginTop="4dp"
+            android:progress="80"
+            android:progressBackgroundTint="@color/colorProgressBackground"
+            android:progressTint="@color/colorMana"
+            android:scaleY="2"
+            app:layout_constraintEnd_toEndOf="@+id/OppAvatar"
+            app:layout_constraintStart_toStartOf="@+id/OppAvatar"
+            app:layout_constraintTop_toBottomOf="@+id/OppHealthBar" />
+
+        <TextView
+            android:id="@+id/OppMana"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="7"
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorMana"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/OppManaBar"
+            app:layout_constraintStart_toEndOf="@+id/OppManaBar"
+            app:layout_constraintTop_toTopOf="@+id/OppManaBar"
+            app:layout_constraintVertical_bias=".7" />
+
+        <!--PLAYER-->
+        <ProgressBar
+            android:id="@+id/PlayerHealthBar"
+            style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="12dp"
+            android:progress="50"
+            android:progressBackgroundTint="@color/colorProgressBackground"
+            android:progressTint="@color/colorHealth"
+            android:scaleY="2"
+            app:layout_constraintEnd_toEndOf="@+id/PlayerAvatar"
+            app:layout_constraintStart_toStartOf="@+id/PlayerAvatar"
+            app:layout_constraintBottom_toTopOf="@+id/PlayerManaBar" />
+
+        <TextView
+            android:id="@+id/PlayerHealth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="356"
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorHealth"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/PlayerHealthBar"
+            app:layout_constraintStart_toEndOf="@+id/PlayerHealthBar"
+            app:layout_constraintTop_toTopOf="@+id/PlayerHealthBar"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/PlayerMana"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="10"
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorMana"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/PlayerManaBar"
+            app:layout_constraintStart_toEndOf="@+id/PlayerManaBar"
+            app:layout_constraintTop_toTopOf="@+id/PlayerManaBar"
+            app:layout_constraintVertical_bias=".7" />
+
+        <ProgressBar
+            android:id="@+id/PlayerManaBar"
+            style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="12dp"
+            android:layout_marginTop="4dp"
+            android:progress="17"
+            android:progressBackgroundTint="@color/colorProgressBackground"
+            android:progressTint="@color/colorMana"
+            android:scaleY="2"
+            app:layout_constraintEnd_toEndOf="@+id/PlayerAvatar"
+            app:layout_constraintStart_toStartOf="@+id/PlayerAvatar"
+            app:layout_constraintBottom_toTopOf="@+id/PlayerName" />
+
+        <TextView
+            android:id="@+id/PlayerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Gafour"
+            android:textColor="@color/colorPrimaryLight"
+            app:layout_constraintBottom_toTopOf="@+id/PlayerAvatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/PlayerAvatar"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#00FFFFFF"
+            android:scaleType="fitXY"
+            android:src="@drawable/user_icon2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <ImageView
+            android:id="@+id/PlayerAvatarHighlight"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/PlayerAvatar"
+            app:layout_constraintEnd_toEndOf="@+id/PlayerAvatar"
+            app:layout_constraintStart_toStartOf="@+id/PlayerAvatar"
+            app:layout_constraintTop_toTopOf="@+id/PlayerAvatar"
+            android:src="@drawable/highlight_profile"
+            android:visibility="invisible"/>
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/BoardAndHandContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="64"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/OppHand"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="30"
+            android:background="#FFFFFC"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!--<include
+                android:id="@+id/opponent_held0"
+                layout="@layout/arena_card_held_opponent" />
+
+            <include
+                android:id="@+id/opponent_held1"
+                layout="@layout/arena_card_held_opponent" />
+
+            <include
+                android:id="@+id/opponent_held2"
+                layout="@layout/arena_card_held_opponent" />-->
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/OppBoard"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="46"
+            android:background="#FFFFF3F3"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/opp_played0"
+                layout="@layout/arena_board_slot" />
+
+            <include
+                android:id="@+id/opp_played1"
+                layout="@layout/arena_board_slot" />
+
+            <include
+                android:id="@+id/opp_played2"
+                layout="@layout/arena_board_slot" />
+
+            <include
+                android:id="@+id/opp_played3"
+                layout="@layout/arena_board_slot" />
+
+            <include
+                android:id="@+id/opp_played4"
+                layout="@layout/arena_board_slot" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/PlayerBoard"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="46"
+            android:background="#FFF3CE"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/player_played0"
+                layout="@layout/arena_board_slot" />
+
+            <include
+                android:id="@+id/player_played1"
+                layout="@layout/arena_board_slot" />
+
+            <include
+                android:id="@+id/player_played2"
+                layout="@layout/arena_board_slot" />
+
+            <include
+                android:id="@+id/player_played3"
+                layout="@layout/arena_board_slot" />
+
+            <include
+                android:id="@+id/player_played4"
+                layout="@layout/arena_board_slot" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/PlayerHand"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="46"
+            android:background="#FFFFDADA"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!--<include
+                android:id="@+id/player_held0"
+                layout="@layout/arena_card_held_player" />
+
+            <include
+                android:id="@+id/player_held1"
+                layout="@layout/arena_card_held_player" />-->
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/DeckContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="18">
+
+        <ImageView
+            android:id="@+id/OppDeck"
+            android:layout_width="70dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/PlayerDeck"
+            android:layout_width="70dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/PlayerCardLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textColor="@color/colorPrimaryLight"
+            android:textStyle="bold"
+            android:text="11"
+            app:layout_constraintBottom_toTopOf="@+id/PlayerDeck"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/OppCardsLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textColor="@color/colorPrimaryLight"
+            android:textStyle="bold"
+            android:text="10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/OppDeck" />
+
+        <Button
+            android:id="@+id/EndTurnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="-8dp"
+            android:backgroundTint="@color/colorPrimaryLight"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="End Turn"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/SurrenderButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/OppDeck" />
+
+        <Button
+            android:id="@+id/SurrenderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="-8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/colorPrimaryLight"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Surrender"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/PlayerDeck"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/EndTurnButton" />
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

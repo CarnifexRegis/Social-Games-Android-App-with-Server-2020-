@@ -1,0 +1,91 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET     /                           controllers.HomeController.index
+GET    /explore                     controllers.HomeController.explore
+GET    /tutorial                    controllers.HomeController.tutorial
+GET /test controllers.HomeController.test
+GET /:fid/id controllers.HomeController.getID(fid: String)
+GET /:iid/getMyUserInformation controllers.HomeController.getMyUserInformation(iid: Integer)
+GET /:iid/getFriends controllers.HomeController.getFriends(iid: Integer)
+GET /search/:iid1/:iid2/Friend controllers.HomeController.insertFriend(iid1: Integer, iid2: Integer)
+GET /accept/:iid1/:iid2/Friend controllers.HomeController.acceptFriend(iid1: Integer, iid2: Integer)
+GET /delete/:iid1/:iid2/Friend controllers.HomeController.deleteFriend(iid1: Integer, iid2: Integer)
+GET /save/:iid/:photo/Picture controllers.HomeController.setPicture(photo: String,iid: Integer)
+GET /save/:pid/:iid/Pid controllers.HomeController.setPidToUser(iid: Integer, pid: Integer)
+GET /save/:pid/:iid/PidCard controllers.HomeController.setPidToCard(iid: Integer, pid: Integer)
+GET /:fid/quest controllers.HomeController.getQuest(fid: Integer)
+GET /:iid/trade controllers.HomeController.getTradeRequests(iid: Integer)
+GET /:iid/match controllers.HomeController.getMatchRequests(iid: Integer)
+GET /set/:userID/:fid/TradeReq controllers.HomeController.setTradeReq(userID: Integer,fid: Integer)
+GET /set/:userID/:fid/MatchReq controllers.HomeController.setMatchReq(userID: Integer,fid: Integer)
+GET /:iid/AcceptedMatches controllers.HomeController.getAcceptedMatches(iid: Integer)
+GET /:iid/AcceptedTrades controllers.HomeController.getAcceptedTrades(iid: Integer)
+GET /update/:userID/:distance/Steps controllers.HomeController.updateSteps(userID: Integer, distance: Float)
+GET /add/:userID/:packType/Pack controllers.HomeController.addPack(userID: Integer, packType: Integer)
+GET /get/:userID/Packs controllers.HomeController.getPacks(userID: Integer)
+GET /open/:userID/:packType/Pack controllers.HomeController.openPack(userID: Integer, packType: Integer)
+GET /buy/:userID/:packType/Pack controllers.HomeController.buyPack(userID: Integer, packType: Integer)
+GET /test/:userID/:traderID/TradeHappening controllers.HomeController.testIfTradeHappening(userID: Integer,traderID: Integer)
+GET /put/:userID/:traderID/:role/:idCard/:type/:picture/Card controllers.HomeController.putCard(userID: Integer,traderID: Integer,role: String,idCard: Integer,type: Integer,picture: String)
+GET /getTraded/:userID/:traderID/:role/Card controllers.HomeController.getTradedCard(userID: Integer, traderID: Integer,role: String)
+GET /accept/:userID/:traderID/:role/Trade controllers.HomeController.acceptTrade(userID: Integer,traderID: Integer,role: String)
+GET /instance/:userID/:traderID/Available controllers.HomeController.checkIfInstanceAvailable(userID: Integer,traderID: Integer)
+GET /opponent/:userID/:traderID/:role/:idCard/Card controllers.HomeController.getOpponentCard(userID: Integer, traderID: Integer,role: String,idCard: Integer)
+GET /get/:userID/:traderID/:role/IfAccept controllers.HomeController.getIfAccepted(userID: Integer,traderID: Integer,role: String)
+GET /card/:userID/:traderID/:role/Got controllers.HomeController.setCardGot(userID: Integer,traderID: Integer,role: String)
+GET /getCards/:id controllers.HomeController.getCards(id: Integer)
+GET /get/:userID/DeckSkeleton controllers.HomeController.getDeckSkeleton(userID: Integer)
+GET /getDeck/:did/Elements controllers.HomeController.getDeckElements(did: Integer)
+GET /removeCard/:cardID/:deckID/FromDeck controllers.HomeController.removeCardFromDeck(cardID: Integer, deckID: Integer)
+GET /addCard/:owner/:cardID/:deckID/ToDeck  controllers.HomeController.addCardToDeck(owner: Integer, cardID: Integer, deckID: Integer)
+
+#MergeCards Yann Stuff
+GET /get/:iid1/:iid2/MergeCount controllers.HomeController.getMergeCount(iid1: Integer,iid2: Integer)
+GET /decrease/:iid1/:iid2/MergeCount controllers.HomeController.decreaseMergeCount(iid1: Integer,iid2: Integer)
+GET /accept/:userID/:traderID/:role/TradeMerge controllers.HomeController.acceptTradeMerge(userID: Integer,traderID: Integer,role: String)
+GET /get/:userID/:traderID/:role/IfAcceptMerge controllers.HomeController.getIfAcceptedMerge(userID: Integer,traderID: Integer,role: String)
+POST /switch/:cid/:owner/:type/CardAndUpdate controllers.HomeController.switchCardAndUpdate(cid: Integer, owner: Integer,type: Integer)
+#End merge cards
+
+#Helpers for the merge bois
+GET /CardTiers/GetRandomCard/:tier controllers.HomeController.getRandomCardOfTier(tier: Integer)
+#Maxis Game Stuff
+GET /InGame/EndTurn/:playerID controllers.HomeController.endTurn(playerID: Integer)
+GET /InGame/GetFullBoard/:playerID controllers.HomeController.getFullBoard(playerID: Integer)
+GET /InGame/GetUpdate/:playerID controllers.HomeController.getBoardUpdate(playerID: Integer)
+GET /InGame/PlaceCard/:playerID/:handCardID/:onEnemySide/:slotID controllers.HomeController.placeCard(playerID: Integer, handCardID: Integer, onEnemySide: Boolean, slotID: Integer)
+GET /InGame/PlaceCardOnFace/:playerID/:handCardID/:onEnemyFace controllers.HomeController.placeCardOnFace(playerID: Integer, handCardID: Integer, onEnemyFace: Boolean)
+GET /InGame/Attack/:playerID/:slotIDAttacker/:onEnemySide/:slotIDTarget controllers.HomeController.attack(playerID: Integer, slotIDAttacker: Integer, onEnemySide: Boolean, slotIDTarget: Integer)
+GET /InGame/AttackFace/:playerID/:slotIDAttacker/:onEnemyFace controllers.HomeController.attackOnFace(playerID: Integer, slotIDAttacker: Integer, onEnemyFace: Boolean)
+POST /GameManagement/SelectDeck/:playerID/:deckID/:elementID controllers.HomeController.selectDeck(playerID: Integer, deckID: Integer, elementID: Integer)
+GET /GameManagement/HasGameStarted/:playerID controllers.HomeController.hasGameStarted(playerID: Integer)
+GET /InGame/CardTargets/:playerID/:handCardID controllers.HomeController.getValidTargetsForCard(playerID: Integer, handCardID: Integer)
+GET /InGame/MonsterTargets/:playerID/:slotID controllers.HomeController.getValidTargetsForMonster(playerID: Integer, slotID: Integer)
+GET /InGame/GetCardImages/:playerID controllers.HomeController.getCardImages(playerID: Integer)
+GET /InGame/Surrender/:playerID controllers.HomeController.surrender(playerID: Integer)
+POST /GameManagement/EnterMatchmaking/:playerID controllers.HomeController.enterMatchmaking(playerID: Integer)
+POST /GameManagement/CancelMatchmaking/:playerID controllers.HomeController.cancelMatchmaking(playerID: Integer)
+GET /GameManagement/WasMatchFound/:playerID controllers.HomeController.wasMatchFound(playerID: Integer)
+GET /STOPLUL controllers.HomeController.pauseLUL()
+GET /STARTLUL controllers.HomeController.startLUL()
+#End Maxis Game Stuff
+
+
+POST /increment/:iid/Win controllers.HomeController.incrementWin(iid: Integer)
+POST /increment/:iid/Lose controllers.HomeController.incrementLose(iid: Integer)
+POST /switch/:cid/:owner/Card controllers.HomeController.switchCard(cid: Integer, owner: Integer)
+POST /update/:iid1/:iid2/TradeCount controllers.HomeController.updateTradeCount(iid1: Integer,iid2: Integer)
+POST /update/:iid1/:iid2/MatchCount controllers.HomeController.updateMatchCount(iid1: Integer,iid2: Integer)
+POST /destroy/:userID/:traderID/Trade controllers.HomeController.destroyTrade(userID: Integer, traderID: Integer)
+POST /insert/:fid/:name/:mail/user controllers.HomeController.insertUser(fid: String,name: String,mail: String)
+POST /:userID/:fid/resetTrade controllers.HomeController.resetTradeReq(userID: Integer, fid: Integer)
+POST /:userID/:fid/resetMatch controllers.HomeController.resetMatchReq(userID: Integer, fid: Integer)
+POST /accept/:userID/:otherID/Match controllers.HomeController.acceptMatchReq(userID: Integer,otherID: Integer)
+POST /accept/:userID/:otherID/Trade controllers.HomeController.acceptTradeReq(userID: Integer,otherID: Integer)
+POST /changeDeck/:did/:name/Name controllers.HomeController.changeDeckName(did: Integer, name: String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

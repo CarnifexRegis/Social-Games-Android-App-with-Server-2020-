@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/friendRequest"
+    android:layout_width="fill_parent"
+    android:layout_height="80dp"
+    android:orientation="vertical">
+
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.7dp"
+        android:background="@color/colorPrimary" />
+
+    <LinearLayout
+        android:id="@+id/friendRequestLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="78.6dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.01"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.79"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.01" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/RequestPicture"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.98"
+                android:src="@drawable/user_icon2"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="1dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.01" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/RequestName"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.79"
+            android:gravity="center"
+            android:hint="Username"
+            android:textSize="22sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.01"
+            android:background="@color/colorPrimary" />
+
+
+        <LinearLayout
+            android:id="@+id/AcceptDeclineButton"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.39"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/acceptFriend"
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                app:srcCompat="@drawable/accept" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="4dp"
+                    android:orientation="vertical"></LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimary" />
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/declineFriend"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                app:srcCompat="@drawable/decline" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.01"
+            android:background="@color/colorPrimary" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.7dp"
+        android:background="@color/colorPrimary" />
+
+</LinearLayout>

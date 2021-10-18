@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/friendEntry"
+    android:layout_width="fill_parent"
+    android:layout_height="80dp"
+    android:orientation="vertical">
+
+
+    <View
+        android:id="@+id/LineTop"
+        android:layout_width="fill_parent"
+        android:layout_height="0.7dp"
+        android:background="#09E8B8" />
+
+    <LinearLayout
+        android:id="@+id/friendlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="78.6dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.01"
+            android:background="#09E8B8" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.79"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.01" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/UsernamePicture"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.98"
+                android:src="@drawable/user_icon2"
+                app:civ_border_color="#09E8B8"
+                app:civ_border_width="1dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.01" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/UsernameText"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.41"
+            android:gravity="center"
+            android:hint="Username"
+            android:textSize="22sp" />
+
+        <LinearLayout
+            android:id="@+id/DuelLayout"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.39"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.02"
+                android:background="#09E8B8" />
+
+            <ImageView
+                android:id="@+id/duelFriendButton"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.97"
+                app:srcCompat="@drawable/duel" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.01"
+                android:background="#09E8B8" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/UserButtonsLayout"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.39"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/RemoveFriendButton"
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="top"
+                app:srcCompat="@drawable/delete" />
+
+            <LinearLayout
+                android:id="@+id/splitButtonLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/splitButtonLineLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="4dp"
+                    android:orientation="vertical"></LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#09E8B8" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/tradeFriendButton"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                app:srcCompat="@drawable/trade" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.01"
+            android:background="@color/colorPrimary" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/LineBot"
+        android:layout_width="fill_parent"
+        android:layout_height="0.7dp"
+        android:background="#09E8B8" />
+
+</LinearLayout>

@@ -1,0 +1,560 @@
+package com.example.steppingmonsterduel2;
+
+import android.content.pm.ActivityInfo;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Pair;
+import android.util.SparseArray;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.example.steppingmonsterduel2.Services.Element;
+import com.example.steppingmonsterduel2.ServerSide.ServerFake;
+import com.example.steppingmonsterduel2.ServerSide.Utility.PlayerBoardUpdate;
+import com.example.steppingmonsterduel2.Services.GameContent;
+
+import java.util.Locale;
+
+public class DoubleDuelActivity extends AppCompatActivity {
+
+    //enop = I actually forgot what enop stands for. It's stuff that I'm gonna have to remove once you only play yourself, not the opponent as well.
+
+    //lots of enop
+    private ServerFake serverInterface = ServerFake.instance;
+    int playerID = 40, opponentID = 3; //TODO don't hardcode
+
+    //Layouts and displays!
+    BoardSlot[] oppBoard;
+    BoardSlot[] playerBoard;
+    SparseArray<PlayerDrawnCard> playerDrawnCards;
+    SparseArray<PlayerDrawnCard> oppDrawnCards; //enop
+    ViewGroup hand;
+    ViewGroup oppHand;
+    CorePlayerStat health, mana, oppHealth, oppMana;
+    TextView deckSize, oppDeckSize;
+    View deck, oppDeck;
+    TextView handCardCount, oppHandCardCount; //enop
+    Button endTurnButton;
+    ImageView playerAvatar, oppAvatar;
+    View playerAvatarHighlight, oppAvatarHighlight;
+
+    //Data for displays
+    int i_handCardCount = 0, i_oppHandCardCount = 0; //enop //I hate how I implemented this. TODO have the server send an exact number of cards, not the difference
+    int roundMana;
+    final int maxPlayerHealth = GameContent.MAX_PLAYER_HEALTH;
+
+    //Interaction
+    boolean myTurn;
+    Click firstClick = null;
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        serverInterface.quitGame(playerID, opponentID);
+        System.out.println("DOUBLE ARENA ACTIVITY HAS STOPPED!");
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        System.out.println("DOUBLE ARENA ACTIVITY IS BEING CREATED!");
+        setContentView(R.layout.activity_double_duel);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        /*
+        //how to periodically run stuff
+        Handler handler = new Handler();
+        Mutable<Integer> progress = new Mutable<>(0);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                bar.setProgress(progress.value++);
+                handler.postDelayed(this, 500);
+            }
+        };
+        handler.post(runnable);
+        button.setOnClickListener((view)->{handler.removeCallbacks(runnable);}); //how to stop periodically running stuff
+        */
+
+        //Member initialization
+        playerDrawnCards = new SparseArray<>();
+        oppDrawnCards = new SparseArray<>();
+        health = new CorePlayerStat(findViewById(R.id.PlayerHealthBar), findViewById(R.id.PlayerHealth));
+        mana = new CorePlayerStat(findViewById(R.id.PlayerManaBar), findViewById(R.id.PlayerMana));
+        oppHealth = new CorePlayerStat(findViewById(R.id.OppHealthBar), findViewById(R.id.OppHealth));
+        oppMana = new CorePlayerStat(findViewById(R.id.OppManaBar), findViewById(R.id.OppMana));
+        deckSize = findViewById(R.id.PlayerCardLeft);
+        oppDeckSize = findViewById(R.id.OppCardsLeft);
+        deck = findViewById(R.id.PlayerDeck);
+        oppDeck = findViewById(R.id.OppDeck);
+        handCardCount = findViewById(R.id.PlayerHandCardCount);
+        oppHandCardCount = findViewById(R.id.OppHandCardCount);
+        endTurnButton = findViewById(R.id.EndTurnButton);
+        endTurnButton.setOnClickListener((view)->endTurn());
+        playerAvatar = findViewById(R.id.PlayerAvatar);
+        oppAvatar = findViewById(R.id.OppAvatar);
+        playerAvatar.setOnClickListener((view)->click(Click.Type.AVATAR_PLAYER, 0));
+        oppAvatar.setOnClickListener((view)->click(Click.Type.AVATAR_OPPONENT, 0));
+        playerAvatarHighlight = findViewById(R.id.PlayerAvatarHighlight);
+        oppAvatarHighlight = findViewById(R.id.OppAvatarHighlight);
+
+        oppBoard = new BoardSlot[]{
+                new BoardSlot(findViewById(R.id.opp_played0)),
+                new BoardSlot(findViewById(R.id.opp_played1)),
+                new BoardSlot(findViewById(R.id.opp_played2)),
+                new BoardSlot(findViewById(R.id.opp_played3)),
+                new BoardSlot(findViewById(R.id.opp_played4))
+        };
+        playerBoard = new BoardSlot[]{
+                new BoardSlot(findViewById(R.id.player_played0)),
+                new BoardSlot(findViewById(R.id.player_played1)),
+                new BoardSlot(findViewById(R.id.player_played2)),
+                new BoardSlot(findViewById(R.id.player_played3)),
+                new BoardSlot(findViewById(R.id.player_played4))
+        };
+        hand = (LinearLayout) findViewById(R.id.PlayerHand);
+        oppHand = (LinearLayout) findViewById(R.id.OppHand);
+        for(int i=0; i<5; i++){
+            final int id = i;
+            oppBoard[i].setEmpty();
+            oppBoard[i].setOnClickListener((view)->{click(Click.Type.BOARD_OPPONENT, id);});
+            playerBoard[i].setEmpty();
+            playerBoard[i].setOnClickListener((view)->{click(Click.Type.BOARD_PLAYER, id);});
+        }
+
+        //FAKING SERVER STUFF
+        serverInterface.startGame(playerID, opponentID);
+        PlayerBoardUpdate initialBoard = serverInterface.getBoardUpdate(playerID);
+        applyBoardUpdate(initialBoard);
+        PlayerBoardUpdate enemyBoard = serverInterface.getBoardUpdate(opponentID); //enop
+        applyEnemyBoardUpdate(enemyBoard); //enop
+
+
+        System.out.println("DOUBLE ARENA ACTIVITY CREATION HAS FINISHED!");
+    }
+
+    //Board Updates
+    protected void setMyTurn(boolean myTurn){
+        this.myTurn = myTurn;
+    }
+
+    protected void applyBoardUpdate(PlayerBoardUpdate update){
+        //System.out.println("PBU");
+        if(update == null) throw new IllegalArgumentException("update was null!");
+
+        if(update.isPlayerTurn != null) setMyTurn(update.isPlayerTurn);
+        if(update.roundMana != null) roundMana = update.roundMana;
+        if(update.playerHealth != null) health.setValue(update.playerHealth, maxPlayerHealth);
+        if(update.opponentHealth != null) oppHealth.setValue(update.opponentHealth, maxPlayerHealth);
+        if(update.playerMana != null) mana.setValue(update.playerMana, roundMana);
+        if(update.opponentMana != null) oppMana.setValue(update.opponentMana, roundMana);
+        if(update.playerDeckSize != null) setPlayerDeckSize(update.playerDeckSize);
+        if(update.opponentDeckSize != null) setOppDeckSize(update.opponentDeckSize);
+        if(update.opponentHandDiff != null) {
+            setOppHandCardCount(i_oppHandCardCount += update.opponentHandDiff);
+        }
+        //System.out.println("Held CardType Removals:");
+        for(int id : update.getHandCardsRemoved()) {
+            //System.out.println("REMOVED: "+id);
+            playerDrawnCards.get(id).removeView();
+            playerDrawnCards.remove(id);
+        }
+        for(Pair<Integer, PlayerBoardUpdate.HandCard> heldCard : update.getHandCardsAdded()){
+            View newCard = addDrawnCardView();
+            PlayerDrawnCard drawnCard = new PlayerDrawnCard(heldCard.first, heldCard.second.typeID, newCard);
+            drawnCard.setOnClickListener((view)->click(Click.Type.DRAWN_CARD, drawnCard.id));
+            playerDrawnCards.put(heldCard.first, drawnCard);
+        }
+        //System.out.println("Monster removals: ");
+        for(PlayerBoardUpdate.PlayerBoardPosition removedMon : update.getRemovedMonsters()){
+            BoardSlot boardSlot = (removedMon.onEnemySide? oppBoard : playerBoard)[removedMon.slotID];
+            if(boardSlot.isEmpty()) System.out.println("CLIENTSIDE WARNING: tried to remove monster at "+removedMon+" even though there was none.");
+            boardSlot.setEmpty();
+            //System.out.println("REMOVED: "+removedMon.slotID+" "+(removedMon.onEnemySide? "OPP":"ALL"));
+        }
+        for(Pair<PlayerBoardUpdate.PlayerBoardPosition, PlayerBoardUpdate.AddedMonster> pair : update.getAddedMonsters()){
+            BoardSlot boardSlot = (pair.first.onEnemySide? oppBoard : playerBoard)[pair.first.slotID];
+            PlayerBoardUpdate.AddedMonster mon = pair.second;
+            boardSlot.create(mon.typeID, mon.health, mon.dammage);
+            boardSlot.setStunned(mon.isStunned);
+        }
+        //System.out.println("Monster updates: ");
+        for(Pair<PlayerBoardUpdate.PlayerBoardPosition, PlayerBoardUpdate.MonsterUpdate> pair : update.getMonsterUpdates()){
+            //System.out.println("UPDATED: "+mon.slotID+" "+(mon.onEnemySide? "OPP":"ALL"));
+            BoardSlot boardSlot = (pair.first.onEnemySide? oppBoard : playerBoard)[pair.first.slotID];
+            PlayerBoardUpdate.MonsterUpdate mon = pair.second;
+            if(boardSlot.isEmpty()){
+                throw new RuntimeException("Client received a monster update even thouogh there was no monster to update. That means Maxi fucked something up big time, tell him that!");
+            }
+            else {
+                if(mon.typeID != null) boardSlot.setTypeInfo(mon.typeID);
+                if(mon.health != null) boardSlot.setHealth(mon.health);
+                if(mon.damage != null) boardSlot.setDamage(mon.damage);
+                if(mon.isStunned != null) boardSlot.setStunned(mon.isStunned);
+            }
+        }
+    }
+    protected void applyEnemyBoardUpdate(PlayerBoardUpdate update){ //enop
+        //System.out.println("OPBU");
+        if(update == null) throw new IllegalArgumentException("update was null!");
+
+        if(update.opponentHandDiff != null) {
+            setPlayerHandCardCount(i_handCardCount += update.opponentHandDiff);
+        }
+
+        for(int id : update.getHandCardsRemoved()) {
+            oppDrawnCards.get(id).removeView();
+            oppDrawnCards.remove(id);
+        }
+        for(Pair<Integer, PlayerBoardUpdate.HandCard> heldCard : update.getHandCardsAdded()){
+            View newCard = addOppDrawnCardView();
+            PlayerDrawnCard drawnCard = new PlayerDrawnCard(heldCard.first, heldCard.second.typeID, newCard);
+            drawnCard.setOnClickListener((view)->click(Click.Type.DRAWN_CARD, drawnCard.id));
+            oppDrawnCards.put(heldCard.first, drawnCard);
+        }
+    }
+
+    protected boolean applyHighlights(@Nullable ServerFake.PlayerHighlights highlights){
+        if(highlights == null){ //unhighlight everything
+            for(int i=0; i<5; i++){
+                playerBoard[i].setHighlight(false);
+                oppBoard[i].setHighlight(false);
+            }
+            highlightPlayerAvatar(false);
+            highlightOppAvatar(false);
+            return false;
+        }
+        else{
+            boolean somethingHighlighted = false;
+            if(!myTurn) highlights = new ServerFake.PlayerHighlights(highlights.opponentBoard, highlights.playerBoard, highlights.opponentFace, highlights.playerFace); //enop
+            for(int i=0; i<5; i++){
+                boolean highlighted = highlights.playerBoard[i];
+                if(highlighted) somethingHighlighted = true;
+                playerBoard[i].setHighlight(highlighted);
+                highlighted = highlights.opponentBoard[i];
+                if(highlighted) somethingHighlighted = true;
+                oppBoard[i].setHighlight(highlighted);
+            }
+            if(highlights.playerFace) somethingHighlighted = true;
+            highlightPlayerAvatar(highlights.playerFace);
+            if(highlights.opponentFace) somethingHighlighted = true;
+            highlightOppAvatar(highlights.opponentFace);
+            return somethingHighlighted;
+        }
+    }
+
+    //Helpers for BoardUpdates
+    protected void setPlayerHandCardCount(int count){
+        handCardCount.setText(String.format(Locale.US, "%d", count));
+    }
+    protected void setOppHandCardCount(int count){
+        oppHandCardCount.setText(String.format(Locale.US, "%d", count));
+    }
+
+    protected void setPlayerDeckSize(int count){
+        deckSize.setText(String.format(Locale.US, "%d", count));
+        deck.setVisibility(count == 0? View.INVISIBLE : View.VISIBLE);
+    }
+    protected void setOppDeckSize(int count){
+        oppDeckSize.setText(String.format(Locale.US, "%d", count));
+        oppDeck.setVisibility(count == 0? View.INVISIBLE : View.VISIBLE);
+    }
+
+    protected View addDrawnCardView(){
+        View view = getLayoutInflater().inflate(R.layout.arena_card_held_player, hand, false);
+        hand.addView(view);
+        return view;
+    }
+    protected View addOppDrawnCardView(){
+        View view = getLayoutInflater().inflate(R.layout.arena_card_held_player, oppHand, false);
+        oppHand.addView(view);
+        return view;
+    }
+
+    //Helpers for Highlights
+    private void highlightPlayerAvatar(boolean highlighted){
+        playerAvatarHighlight.setVisibility(highlighted? View.VISIBLE : View.INVISIBLE);
+    }
+    private void highlightOppAvatar(boolean highlighted){
+        oppAvatarHighlight.setVisibility(highlighted? View.VISIBLE : View.INVISIBLE);
+    }
+
+
+    //Clicks
+    protected void click(Click.Type type, int slotID){
+        int activePlayerID = myTurn? playerID : opponentID;
+        Click thisClick = new Click((myTurn? type : type.mirrored()), slotID);
+        boolean isFirstClick = firstClick == null;
+        if(!isFirstClick){
+            if(type == Click.Type.DRAWN_CARD) isFirstClick = true; //weird flow control. TODO
+            else if(firstClick.execute(activePlayerID, thisClick, serverInterface)){
+                System.out.println("VALID CLICK");
+                applyBoardUpdate(serverInterface.getBoardUpdate(playerID));
+                applyEnemyBoardUpdate(serverInterface.getBoardUpdate(opponentID)); //enop
+            }
+            else System.out.println("INVALID CLICK");
+            firstClick = null;
+            applyHighlights(null);
+        }
+        if(isFirstClick) {
+            firstClick = thisClick;
+            ServerFake.PlayerHighlights highlights = firstClick.getHighlights(activePlayerID, serverInterface);
+            if(!applyHighlights(highlights)) firstClick = null;
+        }
+    }
+    protected void endTurn(){
+        if(!serverInterface.endTurn(myTurn? playerID : opponentID)) {
+            throw new IllegalArgumentException("it wasn't this player's turn!"); //enop
+        }
+        applyBoardUpdate(serverInterface.getBoardUpdate(playerID));
+        applyEnemyBoardUpdate(serverInterface.getBoardUpdate(opponentID)); //enop
+        firstClick = null;
+        applyHighlights(null);
+    }
+
+    //---------------
+    //Classes
+    //---------------
+    protected static class BoardSlot {
+        private final ImageView button;
+        private final View card;
+        private final View highlight;
+        private final TextView health;
+        private final TextView damage;
+        private final TextView name;
+        private final View stun;
+        private final ImageView border;
+        private boolean visible;
+
+        public BoardSlot(View slotView){
+            this.card = (ViewGroup) slotView.findViewById(R.id.card);
+            this.highlight = slotView.findViewById(R.id.highlight);
+            this.button = (ImageView) slotView.findViewById(R.id.button);
+            this.health = (TextView) slotView.findViewById(R.id.health);
+            this.damage = (TextView) slotView.findViewById(R.id.damage);
+            this.name = (TextView) slotView.findViewById(R.id.name);
+            this.stun = slotView.findViewById(R.id.stun);
+            this.border = slotView.findViewById(R.id.border);
+            this.setEmpty();
+            this.setStunned(false);
+            this.setHighlight(false);
+        }
+
+        //useful stuff
+        public void setEmpty(){
+            setVisibility(false);
+        }
+        public void create(int monsterTypeID, int healthPoints, int damagePoints){
+            setVisibility(true);
+            setStunned(false);
+            setTypeInfo(monsterTypeID);
+            setHealth(healthPoints);
+            setDamage(damagePoints);
+        }
+        public void setOnClickListener(View.OnClickListener listener){
+            button.setOnClickListener(listener);
+        }
+
+        public void setHealth(int healthPoints){
+            setTextInt(health, healthPoints);
+        }
+        public void setDamage(int damagePoints){
+            setTextInt(damage, damagePoints);
+        }
+        public void setStunned(boolean stunned){
+            stun.setVisibility(stunned? View.VISIBLE : View.INVISIBLE);
+        }
+        public boolean isEmpty(){
+            return !visible;
+        }
+        public void setHighlight(boolean highlighted){
+            highlight.setVisibility(highlighted? View.VISIBLE : View.INVISIBLE);
+        }
+        public void setTypeInfo(int monsterTypeID){
+            GameContent.MonsterType monsterType = GameContent.getMonsterByID(monsterTypeID);
+            setName(monsterType.name);
+            setElement(monsterType.element);
+        }
+
+        private void setName(String name){
+            this.name.setText(name);
+        }
+        private void setElement(Element element){
+            border.setImageResource(element.monsterResourceID);
+        }
+        private void setVisibility(boolean visible){
+            card.setVisibility(visible? View.VISIBLE : View.INVISIBLE);
+            this.visible = visible;
+        }
+    }
+
+    protected static class PlayerDrawnCard {
+        private final int id;
+        private final View card;
+        private final TextView name;
+        private final TextView mana;
+        private final TextView health;
+        private final TextView damage;
+        private final ImageButton button;
+        private final ImageView border;
+        public PlayerDrawnCard(int cardID, int typeID, View card){
+            this.id = cardID;
+            this.card = card;
+            this.name = card.findViewById(R.id.name);
+            this.mana = card.findViewById(R.id.mana);
+            this.health = card.findViewById(R.id.health);
+            this.damage = card.findViewById(R.id.damage);
+            this.button = card.findViewById(R.id.button);
+            this.border = card.findViewById(R.id.border);
+            setTypeInfo(typeID);
+        }
+
+        public void removeView(){
+            ((ViewGroup)card.getParent()).removeView(card);
+        }
+
+
+        public void setOnClickListener(View.OnClickListener listener){
+            button.setOnClickListener(listener);
+        }
+
+        private void setTypeInfo(int typeID){
+            GameContent.CardType cardType = GameContent.getCardTypeByID(typeID);
+            setName(cardType.name);
+            setMana(cardType.mana);
+            if(cardType instanceof GameContent.MonsterType){
+                GameContent.MonsterType monster = (GameContent.MonsterType) cardType;
+                setMonsterStatVisibility(true);
+                setHealth(monster.health);
+                setDamage(monster.damage);
+                setElement(monster.element, true);
+            }
+            else {
+                setMonsterStatVisibility(false);
+                setElement(cardType.element, false);
+            }
+
+        }
+        private void setName(String name){
+            this.name.setText(name);
+        }
+        private void setMana(int value){
+            setTextInt(mana, value);
+        }
+        private void setHealth(int value){
+            setTextInt(health, value);
+        }
+        private void setDamage(int value){
+            setTextInt(damage, value);
+        }
+        private void setMonsterStatVisibility(boolean visible){
+            health.setVisibility(visible? View.VISIBLE : View.INVISIBLE);
+            damage.setVisibility(visible? View.VISIBLE : View.INVISIBLE);
+        }
+        private void setElement(Element element, boolean isMonster){
+            border.setImageResource(isMonster ? element.monsterResourceID : element.spellResourceID);
+        }
+    }
+
+    protected static class CorePlayerStat {
+        private final ProgressBar bar;
+        private final TextView text;
+        public CorePlayerStat(ProgressBar bar, TextView text){
+            this.bar = bar;
+            this.text = text;
+        }
+        public void setValue(int value, int max){
+            bar.setProgress((value * 100) / max);
+            setTextInt(text, value);
+        }
+    }
+
+    private static void setTextInt(TextView view, int value) {
+        view.setText(String.format(Locale.US, "%d", value));
+    }
+
+    protected static class Click {
+        public enum Type{
+            DRAWN_CARD, BOARD_PLAYER, BOARD_OPPONENT, AVATAR_PLAYER, AVATAR_OPPONENT;
+            public Type mirrored(){ //enop
+                switch(this){
+                    case DRAWN_CARD: return DRAWN_CARD;
+                    case BOARD_PLAYER: return BOARD_OPPONENT;
+                    case BOARD_OPPONENT: return BOARD_PLAYER;
+                    case AVATAR_PLAYER: return AVATAR_OPPONENT;
+                    case AVATAR_OPPONENT: return AVATAR_PLAYER;
+                    default: return null;
+                }
+            }
+        }
+        final Type type;
+        final int meta;
+        public Click(Type type, int meta){
+            this.type = type;
+            this.meta = meta;
+        }
+        public boolean execute(int playerID, Click secondClick, ServerFake serverInterface){
+            //System.out.println("CLICK: "+type+"\t"+secondClick.type);
+            switch(type) {
+                case DRAWN_CARD: //maybe place a new card?
+                    switch (secondClick.type) {
+                        case DRAWN_CARD:
+                            return false;
+                        case BOARD_PLAYER:
+                            return serverInterface.placeCard(playerID, this.meta, false, secondClick.meta);
+                        case BOARD_OPPONENT:
+                            return serverInterface.placeCard(playerID, this.meta, true, secondClick.meta);
+                        case AVATAR_PLAYER:
+                            return serverInterface.placeCardOnFace(playerID, this.meta, false);
+                        case AVATAR_OPPONENT:
+                            return serverInterface.placeCardOnFace(playerID, this.meta, true);
+                    }
+                case BOARD_PLAYER:
+                    switch (secondClick.type) {
+                        case DRAWN_CARD:
+                            return false;
+                        case BOARD_PLAYER:
+                            return serverInterface.attack(playerID, this.meta, false, secondClick.meta);
+                        case BOARD_OPPONENT:
+                            return serverInterface.attack(playerID, this.meta, true, secondClick.meta);
+                        case AVATAR_PLAYER:
+                            return serverInterface.attackOnFace(playerID, this.meta, false);
+                        case AVATAR_OPPONENT:
+                            return serverInterface.attackOnFace(playerID, this.meta, true);
+                    }
+                case BOARD_OPPONENT:
+                    return false;
+                case AVATAR_PLAYER:
+                    return false;
+                case AVATAR_OPPONENT:
+                    return false;
+                default:
+                    return false; //just needed for compiler. obviously all types are covered here.
+            }
+        }
+        public ServerFake.PlayerHighlights getHighlights(int playerID, ServerFake serverInterface){
+            //System.out.println("GetHighlights from: "+type+"/"+meta);
+            switch(type){
+                case DRAWN_CARD:
+                    return serverInterface.getValidTargetsForCard(playerID, meta);
+                case BOARD_PLAYER:
+                    return serverInterface.getValidTargetsForMonster(playerID, meta);
+                case BOARD_OPPONENT:
+                    return null;
+                case AVATAR_PLAYER:
+                    return null;
+                case AVATAR_OPPONENT:
+                    return null;
+                default:
+                    return null; //just needed for compiler. obviously all types are covered here.
+            }
+        }
+    }
+}

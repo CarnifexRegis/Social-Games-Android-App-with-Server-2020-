@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.steppingmonsterduel2">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@drawable/illustration2"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".CustomizeDeckActivity"
+                  android:parentActivityName=".EditDeckActivity" ></activity>
+        <activity
+            android:name=".DuelActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".DoubleDuelActivity"
+            android:label="@string/title_activity_double_duel"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PackCardsActivity"
+            android:theme="@style/CardPackOpening" />
+        <activity android:name=".CustomizeDeck" />
+        <activity android:name=".FriendList"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name=".OpenPacksActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".HomeActivity" />
+        <activity android:name=".ChooseDuelDeckActivity" />
+        <activity android:name=".IncludedCardsActivity" />
+        <activity android:name=".GameDecisionActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".GameActivity" />
+        <activity android:name=".EditDeckActivity" />
+        <activity android:name=".EditCardsActivity" />
+        <activity android:name=".ShopBoosterActivity" />
+        <activity android:name=".SwapCardActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".MatchmakingActivity" />
+        <activity android:name=".BuyPacksActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".HomeActivity"
+                  android:screenOrientation="portrait"
+                  android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="API Key" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <service android:name=".Services.LocationService" />
+    </application>
+
+</manifest>

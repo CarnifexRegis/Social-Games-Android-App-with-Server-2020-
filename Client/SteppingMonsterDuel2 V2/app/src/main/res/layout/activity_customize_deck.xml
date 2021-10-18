@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CustomizeDeck">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editDeckName"
+            android:layout_width="280dp"
+            android:layout_height="69dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name" />
+
+        <Button
+            android:id="@+id/updateName"
+            android:layout_width="wrap_content"
+            android:layout_height="61dp"
+            android:layout_weight="1"
+            android:text="aktualisieren" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Im Deck enthalten" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/deckRec"
+        android:layout_width="match_parent"
+        android:layout_height="284dp"
+        android:orientation="horizontal" />
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Karten im Besitz" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ownedRec"
+        android:layout_width="match_parent"
+        android:layout_height="382dp"
+        android:orientation="horizontal" />
+</LinearLayout>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "325599183435",
+    "firebase_url": "https://setup-ed892.firebaseio.com",
+    "project_id": "setup-ed892",
+    "storage_bucket": "setup-ed892.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325599183435:android:2c44523427315b46",
+        "android_client_info": {
+          "package_name": "com.example.steppingmonsterduel2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325599183435-fmsueu2oan600mva1pf0frpjethjucei.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6IKIQ54rBsQ8MTAVab83GhhUg63S7o3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "325599183435-fmsueu2oan600mva1pf0frpjethjucei.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

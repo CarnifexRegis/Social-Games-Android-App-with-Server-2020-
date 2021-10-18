@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    tools:context=".FriendList">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:id="@+id/CompleteFriendList"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="65dp"
+                android:background="#09E8B8"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="61dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10.05">
+
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="0.05" />
+
+                    <ImageView
+                        android:id="@+id/GoBackToMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.95"
+                        android:background="#A3F6E4"
+                        app:srcCompat="@android:drawable/ic_menu_revert" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="0.05" />
+
+                    <TextView
+                        android:id="@+id/FriendlistText"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="7.95"
+                        android:background="#A3F6E4"
+                        android:gravity="center"
+                        android:text="Friendlist"
+                        android:textSize="30dp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="0.05" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/YourProfile"
+                android:layout_width="fill_parent"
+                android:layout_height="99dp"
+                android:orientation="horizontal"
+                android:weightSum="2.5">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.01" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/YourPicture"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.98"
+                        android:src="@drawable/user_icon2"
+                        app:civ_border_color="#09E8B8"
+                        app:civ_border_width="3dp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.01" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/YourUsername"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:gravity="center"
+                    android:hint="Username"
+                    android:text="Gabojor"
+                    android:textSize="25sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.7" />
+
+                    <TextView
+                        android:id="@+id/UserID"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.3"
+                        android:gravity="center|center_horizontal|left"
+                        android:text="ID: "
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#09E8B9" />
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="49dp"
+                android:background="#A3F6E4"
+                android:orientation="horizontal"
+                android:weightSum="1.5">
+
+                <EditText
+                    android:id="@+id/addUserField"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:background="@android:drawable/editbox_background"
+                    android:gravity="center"
+                    android:hint="Add User By ID"
+                    android:textSize="18sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.2"
+                    android:background="#A3F6E4" />
+
+                <ImageView
+                    android:id="@+id/addUserButton"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center|right"
+                    android:layout_weight="0.3"
+                    android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+                    android:src="@drawable/adduser" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#09E8B8" />
+
+            <ScrollView
+                android:id="@+id/FriendList"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <LinearLayout
+                    android:id="@+id/friendlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </ScrollView>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.0">
+
+    </RelativeLayout>
+</LinearLayout>

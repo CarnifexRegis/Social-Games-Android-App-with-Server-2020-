@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryLight">#FFF6D8</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorWhite">#00FFFFFF</color>
+    <color name="engray">#D81B60</color>
+    <color name="colorBlack">#0A0A0A</color>
+    <color name="colorMana">#0C81FF</color>
+    <color name="colorHealth">#FF0C23</color>
+    <color name="colorDefense">#346D10</color>
+    <color name="colorProgressBackground">#9A9A9A</color>
+    <color name ="packInferno">#FF0000</color>
+    <color name ="packTsunami">#1A1AFF</color>
+    <color name ="packStorm">#00004D</color>
+    <color name ="packEarth">#009933</color>
+    <color name ="packTwilight">#CC00CC</color>
+    <color name ="packNormal">#8A8A5C</color>
+
+</resources>
